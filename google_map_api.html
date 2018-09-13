@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        #map{
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Google Map</h1>
+    <div id="map"></div>
+
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            //Map options
+            var options = {
+                zoom: 8, 
+                center: {
+                    lat: 4.4952,
+                    lng: 101.0111
+                }
+            };
+
+            //new map
+            var map = new google.maps.Map(
+                document.getElementById('map'), options);
+
+            //listen for click on map
+            google.maps.event.addListener(map, 'click', function(event){
+                //add marker
+                addMarker({coords: event.latLng});
+            })    
+
+            /*    
+            //add marker
+            var marker = new google.maps.Marker({
+                position: {lat: 4.4952, lng: 101.0111},
+                map: map,
+                icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: "<h1>Pusing, Perak</h1>"
+            });
+
+            marker.addListener('click', ()=> infoWindow.open(map, marker));*/
+
+            //array of markers
+            var markers = [
+                {
+                    coords:{lat: 4.4952, lng: 101.0111},
+                    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content: "<h1>Pusing, Perak<h1>"
+                },
+                {
+                    coords:{lat: 4.4721, lng: 101.0412},
+                    content: "<h1>Batu Gajah, Perak<h1>"
+                },
+                {
+                    coords:{lat: 4.5975, lng: 101.0901},
+                    content: "<h1>Ipoh, Perak<h1>"
+                }
+            ];
+
+            // loop through markers foreach
+            /*    
+            markers.forEach(marker => {
+                addMarker(marker);
+            });*/
+            
+            for(var i = 0; i<markers.length; i++){
+                //add marker
+                addMarker(markers[i]);
+            } 
+
+            //add marker function
+            function addMarker(props){
+                var marker = new google.maps.Marker({
+                position: props.coords,
+                map: map,
+                //icon: props.iconImage
+            });
+
+                //check for custom icon
+                if(props.iconImage){
+                    //set icon image
+                    marker.setIcon(props.iconImage);
+                }
+
+                //check content
+                if(props.content){
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: props.content
+                    });
+
+                    marker.addListener('click', ()=> infoWindow.open(map, marker));
+                }
+            }
+        }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwsWEnn064IQJj_lrnNQzmTGzS7rVAAU&callback=initMap">
+    </script>
+</body>
+</html>
